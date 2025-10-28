@@ -1,6 +1,7 @@
 import { ThemeToggle } from "@/components/theme-toggle"
 import { formatDate } from "@/lib/utils"
 import { docs } from "@source/index"
+import Hero from "@/components/hero"
 
 export default function HomePage() {
   // Sort changelogs by date (newest first)
@@ -15,7 +16,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background relative">
       {/* Header */}
-      <div className="border-b border-border/50">
+      <div className="border-b border-border/50 relative z-50">
         <div className="max-w-5xl mx-auto relative">
           <div className="p-3 flex items-center justify-between">
             <h1 className="text-3xl font-semibold tracking-tight">Changelog</h1>
@@ -24,8 +25,11 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Hero Section */}
+      <Hero />
+
       {/* Timeline */}
-      <div className="max-w-5xl mx-auto px-6 lg:px-10 pt-10">
+      <div id="changelog" className="max-w-5xl mx-auto px-6 lg:px-10 pt-10">
         <div className="relative">
           {sortedChangelogs.map((changelog) => {
             const MDX = (changelog as any).body
