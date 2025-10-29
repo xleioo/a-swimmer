@@ -103,12 +103,14 @@ interface FloatingElementProps {
   children: ReactNode
   className?: string
   depth?: number
+  style?: React.CSSProperties
 }
 
 export const FloatingElement = ({
   children,
   className,
   depth = 1,
+  style,
 }: FloatingElementProps) => {
   const elementRef = useRef<HTMLDivElement>(null)
   const idRef = useRef(Math.random().toString(36).substring(7))
@@ -127,6 +129,7 @@ export const FloatingElement = ({
     <div
       ref={elementRef}
       className={cn("absolute will-change-transform", className)}
+      style={style}
     >
       {children}
     </div>
