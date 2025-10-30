@@ -15,6 +15,7 @@ interface ScrambleHoverProps {
   characters?: string
   className?: string
   scrambledClassName?: string
+  style?: React.CSSProperties
 }
 
 const ScrambleHover: React.FC<ScrambleHoverProps> = ({
@@ -27,6 +28,7 @@ const ScrambleHover: React.FC<ScrambleHoverProps> = ({
   scrambledClassName,
   sequential = false,
   revealDirection = "start",
+  style,
   ...props
 }) => {
   const [displayText, setDisplayText] = useState(text)
@@ -167,6 +169,7 @@ const ScrambleHover: React.FC<ScrambleHoverProps> = ({
       onHoverStart={() => setIsHovering(true)}
       onHoverEnd={() => setIsHovering(false)}
       className={cn("inline-block whitespace-pre-wrap", className)}
+      style={style}
       {...props}
     >
       <span className="sr-only">{displayText}</span>
