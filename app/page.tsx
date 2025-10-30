@@ -1,15 +1,26 @@
-import { ThemeToggle } from "@/components/theme-toggle"
 import { formatDate } from "@/lib/utils"
 import { docs } from "@source/index"
 import Hero from "@/components/hero"
 
+interface ChangelogDoc {
+  date?: string
+  path?: string
+  url?: string
+  version?: string
+  title?: string
+  tags?: string[]
+  body?: React.ComponentType
+  [key: string]: unknown
+}
+
 export default function HomePage() {
   // Sort changelogs by date (newest first)
-  const sortedChangelogs = docs
-    .filter((doc) => doc && (doc as any).date)
-    .sort((a, b) => {
-      const dateA = new Date((a as any).date as string).getTime()
-      const dateB = new Date((b as any).date as string).getTime()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sortedChangelogs = (docs as any[])
+    .filter((doc: ChangelogDoc) => doc && doc.date)
+    .sort((a: ChangelogDoc, b: ChangelogDoc) => {
+      const dateA = new Date(a.date as string).getTime()
+      const dateB = new Date(b.date as string).getTime()
       return dateB - dateA
     })
 
@@ -24,12 +35,13 @@ export default function HomePage() {
       <div id="changelog" className="max-w-5xl mx-auto px-6 lg:px-10 pt-10">
         <div className="relative">
           {sortedChangelogs.map((changelog) => {
-            const MDX = (changelog as any).body
-            const date = new Date((changelog as any).date as string)
+            const MDX = changelog.body as React.ComponentType
+            const date = new Date(changelog.date as string)
             const formattedDate = formatDate(date)
+            const key = changelog.url || changelog.path || Math.random().toString()
 
             return (
-              <div key={(changelog as any).path} className="relative">
+              <div key={key} className="relative">
                 <div className="flex flex-col md:flex-row gap-y-6">
                   <div className="md:w-48 flex-shrink-0">
                     <div className="md:sticky md:top-8 pb-10">
@@ -37,9 +49,9 @@ export default function HomePage() {
                         {formattedDate}
                       </time>
 
-                      {(changelog as any).version && (
+                      {changelog.version && (
                         <div className="inline-flex relative z-10 items-center justify-center w-10 h-10 text-foreground border border-border rounded-lg text-sm font-bold">
-                          {(changelog as any).version}
+                          {changelog.version}
                         </div>
                       )}
                     </div>
@@ -56,15 +68,15 @@ export default function HomePage() {
                     <div className="space-y-6">
                       <div className="relative z-10 flex flex-col gap-2">
                         <h2 className="text-2xl font-semibold tracking-tight text-balance">
-                          {(changelog as any).title}
+                          {changelog.title}
                         </h2>
 
                         {/* Tags */}
-                        {(changelog as any).tags &&
-                          Array.isArray((changelog as any).tags) &&
-                          (changelog as any).tags.length > 0 && (
+                        {changelog.tags &&
+                          Array.isArray(changelog.tags) &&
+                          changelog.tags.length > 0 && (
                             <div className="flex flex-wrap gap-2">
-                              {((changelog as any).tags as string[]).map((tag: string) => (
+                              {changelog.tags.map((tag: string) => (
                                 <span
                                   key={tag}
                                   className="h-6 w-fit px-2 text-xs font-medium bg-muted text-muted-foreground rounded-full border flex items-center justify-center"

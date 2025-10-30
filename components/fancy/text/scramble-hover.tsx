@@ -117,10 +117,6 @@ const ScrambleHover: React.FC<ScrambleHoverProps> = ({
       }
     }
 
-    const availableChars = useOriginalCharsOnly
-      ? Array.from(new Set(text.split(""))).filter((char) => char !== " ")
-      : characters.split("")
-
     if (isHovering) {
       setIsScrambling(true)
       if (sequential) {
