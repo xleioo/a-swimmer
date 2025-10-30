@@ -15,15 +15,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Header */}
-      <div className="border-b border-border/50 relative z-50">
-        <div className="max-w-5xl mx-auto relative">
-          <div className="p-3 flex items-center justify-between">
-            <h1 className="text-3xl font-semibold tracking-tight">Changelog</h1>
-            <ThemeToggle />
-          </div>
-        </div>
-      </div>
+      {/* Set theme to dark unconditionally */}
 
       {/* Hero Section */}
       <Hero />
@@ -83,7 +75,7 @@ export default function HomePage() {
                             </div>
                           )}
                       </div>
-                      <div className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-8 prose-headings:font-semibold prose-a:no-underline prose-headings:tracking-tight prose-headings:text-balance prose-p:tracking-tight prose-p:text-balance">
+                      <div className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-8 prose-headings:font-semibold prose-a:no-underline prose-headings:tracking-tight prose-headings:text-balance prose-p:tracking-tight prose-p:text-balance prose-img:rounded-lg prose-img:shadow-lg">
                         <MDX />
                       </div>
                     </div>

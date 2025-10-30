@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect } from "react"
-import { motion, stagger, useAnimate } from "motion/react"
+import { useState, useEffect } from "react"
+import { motion } from "motion/react"
 import Floating, { FloatingElement } from "@/components/parallax-floating"
+import ScrambleHover from "@/components/fancy/text/scramble-hover"
 
 // 游泳图片 - 使用本地图片（所有图片）
 const swimmingImages = [
@@ -55,32 +56,29 @@ const swimmingImages = [
   "/swimming_images/b9c50f49an87205b4b2078e770ddacfb.jpeg",
 ]
 
-// 为每张图片生成随机位置和样式配置
+// 生成随机图片配置（使用真正的随机数）
 const generateImageConfigs = () => {
-  // 先随机打乱所有图片
+  // 随机打乱所有图片
   const shuffled = [...swimmingImages].sort(() => Math.random() - 0.5)
   // 只取前 15 张
   const selectedImages = shuffled.slice(0, 15)
-  
+
   return selectedImages.map((image, index) => {
-    // 生成随机位置，避免中心区域（40-60%）
-    let top, left
+    // 生成随机位置，避免中心区域（35-65%）
+    let top: number, left: number
     do {
-      top = Math.random() * 90 // 0-90%
-      left = Math.random() * 90 // 0-90%
-    } while (
-      top > 35 && top < 65 && // 避免垂直中心
-      left > 35 && left < 65    // 避免水平中心
-    )
+      top = Math.random() * 90
+      left = Math.random() * 90
+    } while (top > 35 && top < 65 && left > 35 && left < 65)
 
     // 随机深度 (0.5 到 4)
     const depth = 0.5 + Math.random() * 3.5
 
-    // 随机大小（只定宽度，高度自适应保持原始比例）
+    // 随机大小（3种尺寸）
     const sizeOptions = [
-      "w-20 h-auto md:w-32 md:h-auto",      // 小
-      "w-32 h-auto md:w-40 md:h-auto",      // 中
-      "w-40 h-auto md:w-52 md:h-auto",      // 大
+      "w-20 h-auto md:w-32 md:h-auto",
+      "w-32 h-auto md:w-40 md:h-auto",
+      "w-40 h-auto md:w-52 md:h-auto",
     ]
     const sizeClass = sizeOptions[Math.floor(Math.random() * sizeOptions.length)]
 
@@ -96,62 +94,67 @@ const generateImageConfigs = () => {
 }
 
 export default function Hero() {
-  const [scope, animate] = useAnimate()
-  const imageConfigs = generateImageConfigs()
+  // 在客户端生成随机配置，避免 hydration 错误
+  const [imageConfigs, setImageConfigs] = useState<ReturnType<typeof generateImageConfigs>>([])
 
   useEffect(() => {
-    animate(
-      "img",
-      { opacity: [0, 1] },
-      { duration: 0.5, delay: stagger(0.05) } // 减少延迟，因为图片多了
-    )
-  }, [animate])
+    // 组件挂载后生成真正的随机配置
+    setImageConfigs(generateImageConfigs())
+  }, [])
 
   return (
     <div className="w-full py-10">
       <div
         className="relative w-[80%] mx-auto h-[80vh] flex justify-center items-center bg-gradient-to-b from-background to-background/50 overflow-hidden rounded-lg"
-        ref={scope}
       >
-      <motion.div
-        className="z-50 text-center space-y-6 items-center flex flex-col px-4"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.88, delay: 1.5 }}
-      >
-        <h1 className="text-5xl md:text-7xl z-50 font-bold tracking-tight">
-          A Swimmer
-        </h1>
-        <p className="text-xl md:text-2xl z-50 text-muted-foreground max-w-2xl">
-          追踪我们的最新更新和改进
-        </p>
-        <motion.a
-          href="#changelog"
-          className="text-sm z-50 hover:scale-110 transition-transform bg-primary text-primary-foreground rounded-full px-6 py-3 cursor-pointer font-medium"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <motion.div
+          className="z-50 text-center space-y-6 items-center flex flex-col px-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.88, delay: 1.5 }}
         >
-          查看更新日志
-        </motion.a>
-      </motion.div>
-
-      <Floating sensitivity={-1} className="overflow-hidden">
-        {/* 动态生成所有 47 张图片 */}
-        {imageConfigs.map((config) => (
-          <FloatingElement
-            key={config.index}
-            depth={config.depth}
-            style={{ top: config.top, left: config.left }}
-          >
-            <motion.img
-              initial={{ opacity: 0 }}
-              src={config.image}
-              alt="Swimming photo"
-              className={`${config.sizeClass} object-cover rounded-lg hover:scale-105 duration-200 cursor-pointer transition-transform shadow-lg`}
+          <h1 className="text-5xl md:text-5xl z-50  tracking-tight" style={{ fontFamily: 'Calendas Plus, serif' }}>
+            I am a swimmer
+          </h1>
+          <p className="text-xl md:text-2xl z-50 text-muted-foreground max-w-2xl">
+            <ScrambleHover
+              text="since 5"
+              scrambleSpeed={50}
+              maxIterations={8}
+              useOriginalCharsOnly={true}
+              revealDirection = "start"
+              className="cursor-pointer text-red-500" style={{ fontFamily: 'Calendas Plus, serif' }}
             />
-          </FloatingElement>
-        ))}
-      </Floating>
+          </p>
+          <motion.a
+            href="#changelog"
+            className="text-sm z-50 hover:scale-110 transition-transform bg-primary text-primary-foreground rounded-full px-6 py-3 cursor-pointer font-medium"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            My Journey
+          </motion.a>
+        </motion.div>
+
+        <Floating sensitivity={-1} className="overflow-hidden">
+          {/* 只在配置生成后才渲染图片 */}
+          {imageConfigs.map((config) => (
+            <FloatingElement
+              key={config.index}
+              depth={config.depth}
+              style={{ top: config.top, left: config.left }}
+            >
+              <motion.img
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: config.index * 0.05 }}
+                src={config.image}
+                alt="Swimming photo"
+                className={`${config.sizeClass} object-cover rounded-lg hover:scale-105 duration-200 cursor-pointer transition-transform shadow-lg`}
+              />
+            </FloatingElement>
+          ))}
+        </Floating>
       </div>
     </div>
   )

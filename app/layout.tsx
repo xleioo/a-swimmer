@@ -29,9 +29,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
+      className={`${GeistSans.variable} ${GeistMono.variable} antialiased dark`}
       suppressHydrationWarning
+      data-theme="dark"
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Calendas+Plus:wght@400;700&display=swap" rel="stylesheet" />
+      </head>
       <body>
         <ThemeProvider
           attribute="class"
