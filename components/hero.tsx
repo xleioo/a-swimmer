@@ -105,7 +105,7 @@ export default function Hero() {
   return (
     <div className="w-full py-10">
       <div
-        className="relative w-[80%] mx-auto h-[80vh] flex justify-center items-center bg-gradient-to-b from-background to-background/50 overflow-hidden rounded-lg"
+        className="relative w-[80%] mx-auto h-[80vh] flex justify-center items-center bg-transparent overflow-hidden rounded-lg"
       >
         <motion.div
           className="z-50 text-center space-y-6 items-center flex flex-col px-4"

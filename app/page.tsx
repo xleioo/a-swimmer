@@ -1,6 +1,7 @@
 import { formatDate } from "@/lib/utils"
 import { docs } from "@source/index"
 import Hero from "@/components/hero"
+import { AuroraBackground } from "@/components/ui/aurora-background"
 
 interface ChangelogDoc {
   date?: string
@@ -25,14 +26,13 @@ export default function HomePage() {
     })
 
   return (
-    <div className="min-h-screen bg-background relative">
-      {/* Set theme to dark unconditionally */}
+    <AuroraBackground className="min-h-screen" showRadialGradient={false}>
+      <div className="w-full relative">
+        {/* Hero Section */}
+        <Hero />
 
-      {/* Hero Section */}
-      <Hero />
-
-      {/* Timeline */}
-      <div id="changelog" className="max-w-5xl mx-auto px-6 lg:px-10 pt-10">
+        {/* Timeline */}
+        <div id="changelog" className="max-w-5xl mx-auto px-6 lg:px-10 pt-10">
         <div className="relative">
           {sortedChangelogs.map((changelog) => {
             const MDX = changelog.body as React.ComponentType
@@ -98,6 +98,7 @@ export default function HomePage() {
           })}
         </div>
       </div>
-    </div>
+      </div>
+    </AuroraBackground>
   )
 }

@@ -29,9 +29,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable} antialiased dark`}
+      className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
       suppressHydrationWarning
-      data-theme="dark"
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,8 +40,8 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          forcedTheme="light"
           disableTransitionOnChange
         >
           {children}
